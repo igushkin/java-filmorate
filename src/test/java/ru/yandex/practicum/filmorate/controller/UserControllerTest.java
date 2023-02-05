@@ -60,4 +60,45 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.birthday").value("1976-09-20"))
                 .andExpect(status().is2xxSuccessful());
     }
+
+    @Test
+    void createFailEmail() throws Exception {
+        String content = "{ \"login\": \"dolore\", \"name\": \"Nick Name\", \"email\": \"email.ru\", \"birthday\": \"1946-08-20\" }";
+
+        mvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+        ).andExpect(status().is5xxServerError());
+    }
+
+
+    @Test
+    void createFailLogin() throws Exception {
+        String content = "{ \"login\": \"dolor e\", \"name\": \"Nick Name\", \"email\": \"mail@email.ru\", \"birthday\": \"1946-08-20\" }";
+
+        mvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+        ).andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    void createFailBirthday() throws Exception {
+        String content = "{ \"login\": \"dolore\", \"name\": \"Nick Name\", \"email\": \"mail@email.ru\", \"birthday\": \"2023-08-20\" }";
+
+        mvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+        ).andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    void updateFailId() throws Exception {
+        String content = "{ \"login\": \"doloreUpdate\", \"name\": \"est adipisicing\", \"id\": 100, \"email\": \"mail@yandex.ru\", \"birthday\": \"1976-09-20\" }";
+
+        mvc.perform(put("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+        ).andExpect(status().is5xxServerError());
+    }
 }

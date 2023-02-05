@@ -6,7 +6,7 @@ import lombok.*;
 import javax.validation.constraints.*;
 import java.util.*;
 
-@Data()
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 public class Film {

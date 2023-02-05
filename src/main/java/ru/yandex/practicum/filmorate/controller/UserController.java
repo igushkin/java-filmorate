@@ -1,29 +1,25 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.*;
-import ru.yandex.practicum.filmorate.validation.FilmValidator;
 import ru.yandex.practicum.filmorate.validation.UserValidator;
 import ru.yandex.practicum.filmorate.validation.ValidationResult;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 @Slf4j
 public class UserController {
-    private List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
     private int id = 1;
 
     @GetMapping
-    public List<User> getGroups() {
+    public List<User> getAll() {
         return this.users;
     }
 

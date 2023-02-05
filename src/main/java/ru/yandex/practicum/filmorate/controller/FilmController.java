@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.validation.FilmValidator;
 import ru.yandex.practicum.filmorate.validation.ValidationResult;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -16,11 +15,11 @@ import java.util.*;
 @Slf4j
 public class FilmController {
 
-    private List<Film> films = new ArrayList<>();
+    private final List<Film> films = new ArrayList<>();
     private int id = 1;
 
     @GetMapping
-    public List<Film> getGroups() {
+    public List<Film> getAll() {
         return this.films;
     }
 
