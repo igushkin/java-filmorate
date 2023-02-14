@@ -18,8 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 
-    ObjectMapper objectMapper = new ObjectMapper();
-    ObjectWriter objectWriter = objectMapper.writer();
+    //ObjectMapper objectMapper = new ObjectMapper();
+    //ObjectWriter objectWriter = objectMapper.writer();
 
     @Autowired
     private MockMvc mvc;

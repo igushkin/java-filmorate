@@ -1,26 +1,43 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.*;
-import ru.yandex.practicum.filmorate.validation.UserValidator;
-import ru.yandex.practicum.filmorate.validation.ValidationResult;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 @Slf4j
 public class UserController {
-    private final List<User> users = new ArrayList<>();
-    private int id = 1;
+    private UserService service;
+
+    @Autowired
+    public UserController(UserService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public List<User> getAll() {
-        return this.users;
+        return this.service.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable("id") Integer id) {
+        return service.getById(id);
+    }
+
+    @GetMapping("/{id}/friends")
+    public List<User> getFriends(@PathVariable("id") Integer id) {
+        return service.getFriends(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> getMutualFriends(@PathVariable("id") Integer id, @PathVariable("otherId") Integer otherId) {
+        return service.getMutualFriends(id, otherId);
     }
 
     @PostMapping
@@ -28,10 +45,7 @@ public class UserController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        validate(user);
-        user.setId(this.id);
-        this.id++;
-        this.users.add(user);
+        this.service.create(user);
         return user;
     }
 
@@ -40,23 +54,23 @@ public class UserController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        validate(user);
-
-        if (!users.contains(user)) {
-            log.error("Пользователя не найден в базе данных: " + user);
-            throw new ValidationException("Пользователь не найден в базе");
-        }
-
-        this.users.remove(user);
-        this.users.add(user);
+        this.service.update(user);
         return user;
     }
 
-    private void validate(User user) {
-        ValidationResult validationResult = UserValidator.validate(user);
-        if (!validationResult.isValid()) {
-            log.error("Передан невалидный объект пользователя: " + user);
-            throw new ValidationException(validationResult.getMessage());
-        }
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(HttpServletRequest request, @PathVariable("id") Integer id, @PathVariable("friendId") Integer friendId) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
+
+        this.service.addFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteFriend(HttpServletRequest request, @PathVariable("id") Integer id, @PathVariable("friendId") Integer friendId) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
+
+        this.service.deleteFriend(id, friendId);
     }
 }
