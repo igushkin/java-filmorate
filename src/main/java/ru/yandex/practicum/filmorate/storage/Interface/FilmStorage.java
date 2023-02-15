@@ -13,5 +13,5 @@ public abstract class FilmStorage extends Storage<Film> {
 
     public abstract void deleteLike(Film film, User user);
 
-    public abstract List<Map.Entry<Film, Integer>> getTopRated(int count);
+    public abstract List<Film> getTopRated(int count);
 }

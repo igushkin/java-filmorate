@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.storage.Interface.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.Interface.Storage;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class InMemoryFilmStorage extends FilmStorage {
@@ -40,20 +41,27 @@ public class InMemoryFilmStorage extends FilmStorage {
 
 
     @Override
-    public List<Map.Entry<Film, Integer>> getTopRated(int count) {
+    public List<Film> getTopRated(int count) {
 
-        // Create a list from elements of HashMap
-        List<Map.Entry<Film, Integer>> list =
-                new ArrayList<>(this.likes.entrySet());
+        var films = this.getAll();
+        var rating = new ArrayList<Map.Entry<Film, Integer>>();
+
+        for (var film : films) {
+            if (!likes.containsKey(film)) {
+                rating.add(Map.entry(film, 0));
+            } else {
+                rating.add(Map.entry(film, likes.get(film)));
+            }
+        }
 
         // Sort the list
-        Collections.sort(list, new Comparator<Map.Entry<Film, Integer>>() {
+        Collections.sort(rating, new Comparator<Map.Entry<Film, Integer>>() {
             public int compare(Map.Entry<Film, Integer> o1,
                                Map.Entry<Film, Integer> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
+                return (o2.getValue()).compareTo(o1.getValue());
             }
         });
 
-        return list;
+        return rating.stream().limit(count).map(x -> x.getKey()).collect(Collectors.toList());
     }
 }

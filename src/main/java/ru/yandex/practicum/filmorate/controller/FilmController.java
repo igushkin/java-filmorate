@@ -50,7 +50,7 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public void like(HttpServletRequest request, Integer id, Integer userId) {
+    public void like(HttpServletRequest request, @PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
@@ -58,7 +58,7 @@ public class FilmController {
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public void deleteLike(HttpServletRequest request, Integer id, Integer userId) {
+    public void deleteLike(HttpServletRequest request, @PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
@@ -67,11 +67,10 @@ public class FilmController {
 
     //GET /films/popular?count={count}
     @GetMapping("/popular")
-    public void getTopRated(HttpServletRequest request, Integer id, Integer userId,
-                            @RequestParam(value = "count", defaultValue = "10", required = false) Integer count) {
+    public List<Film> getTopRated(HttpServletRequest request, @RequestParam(value = "count", defaultValue = "10", required = false) Integer count) {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        service.getTopRated(count);
+        return service.getTopRated(count);
     }
 }

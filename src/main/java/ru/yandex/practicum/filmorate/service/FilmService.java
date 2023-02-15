@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -31,11 +32,16 @@ public class FilmService {
     }
 
     public Film getById(int id) {
-        return this.storage.getAll()
+        var value = this.storage.getAll()
                 .stream()
                 .filter(x -> x.getId() == id)
-                .findFirst()
-                .orElse(null);
+                .findFirst();
+
+        if (value.isEmpty()) {
+            throw new NotFoundException("Такой фильм не найден");
+        }
+
+        return value.get();
     }
 
     public Film create(Film film) {
@@ -65,7 +71,7 @@ public class FilmService {
         this.storage.like(film, user);
     }
 
-    public List<Map.Entry<Film, Integer>> getTopRated(int count) {
+    public List<Film> getTopRated(int count) {
         return this.storage.getTopRated(count);
     }
 
