@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -14,12 +15,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-@WebMvcTest(UserController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 class UserControllerTest {
-
-    //ObjectMapper objectMapper = new ObjectMapper();
-    //ObjectWriter objectWriter = objectMapper.writer();
 
     @Autowired
     private MockMvc mvc;
@@ -68,7 +68,7 @@ class UserControllerTest {
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().is4xxClientError());
     }
 
 
@@ -79,7 +79,7 @@ class UserControllerTest {
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -89,7 +89,7 @@ class UserControllerTest {
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -99,6 +99,6 @@ class UserControllerTest {
         mvc.perform(put("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().is4xxClientError());
     }
 }

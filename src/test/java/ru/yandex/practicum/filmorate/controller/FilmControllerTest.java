@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -21,11 +23,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(FilmController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 class FilmControllerTest {
-
-    //ObjectMapper objectMapper = new ObjectMapper();
-    //ObjectWriter objectWriter = objectMapper.writer();
 
     @Autowired
     private MockMvc mvc;
@@ -74,7 +74,7 @@ class FilmControllerTest {
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -84,7 +84,7 @@ class FilmControllerTest {
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -94,7 +94,7 @@ class FilmControllerTest {
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -104,7 +104,7 @@ class FilmControllerTest {
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -114,6 +114,6 @@ class FilmControllerTest {
         mvc.perform(put("/films")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().is4xxClientError());
     }
 }
