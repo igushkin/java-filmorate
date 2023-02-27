@@ -14,7 +14,7 @@ import java.util.*;
 
 @Service
 public class UserService {
-    UserStorage storage;
+    private final UserStorage storage;
     private static int id;
 
     static {

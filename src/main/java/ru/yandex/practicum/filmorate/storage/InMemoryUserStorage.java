@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 public class InMemoryUserStorage extends UserStorage {
 
-    private HashMap<User, HashSet<User>> friendship;
+    private final HashMap<User, HashSet<User>> friendship;
 
     public InMemoryUserStorage() {
         this.friendship = new HashMap<>();

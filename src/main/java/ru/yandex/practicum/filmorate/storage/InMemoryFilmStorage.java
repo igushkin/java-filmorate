@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class InMemoryFilmStorage extends FilmStorage {
-    private Map<Film, Integer> likes;
+    private final Map<Film, Integer> likes;
 
     public InMemoryFilmStorage() {
         this.likes = new HashMap<>();

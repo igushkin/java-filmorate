@@ -13,21 +13,21 @@ import java.util.*;
 @RequestMapping("/films")
 @Slf4j
 public class FilmController {
-    private FilmService service;
+    private final FilmService filmService;
 
     @Autowired
     public FilmController(FilmService service) {
-        this.service = service;
+        this.filmService = service;
     }
 
     @GetMapping
     public List<Film> getAll() {
-        return this.service.getAll();
+        return this.filmService.getAll();
     }
 
     @GetMapping("/{filmId}")
     public Film getFilm(@PathVariable("filmId") Integer filmId) {
-        return service.getById(filmId);
+        return filmService.getById(filmId);
     }
 
     @PostMapping
@@ -35,7 +35,7 @@ public class FilmController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        this.service.create(film);
+        this.filmService.create(film);
         return film;
     }
 
@@ -44,7 +44,7 @@ public class FilmController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        service.update(film);
+        filmService.update(film);
 
         return film;
     }
@@ -54,7 +54,7 @@ public class FilmController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        service.like(id, userId);
+        filmService.like(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
@@ -62,7 +62,7 @@ public class FilmController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        service.deleteLike(id, userId);
+        filmService.deleteLike(id, userId);
     }
 
     //GET /films/popular?count={count}
@@ -71,6 +71,6 @@ public class FilmController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        return service.getTopRated(count);
+        return filmService.getTopRated(count);
     }
 }

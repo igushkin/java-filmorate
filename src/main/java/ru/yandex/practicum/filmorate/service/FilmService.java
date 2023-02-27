@@ -13,8 +13,8 @@ import java.util.*;
 
 @Service
 public class FilmService {
-    FilmStorage storage;
-    UserService userService;
+    private final FilmStorage storage;
+    private final UserService userService;
     private static int id;
 
     static {

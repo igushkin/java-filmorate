@@ -13,31 +13,31 @@ import java.util.List;
 @RequestMapping("/users")
 @Slf4j
 public class UserController {
-    private UserService service;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService service) {
-        this.service = service;
+        this.userService = service;
     }
 
     @GetMapping
     public List<User> getAll() {
-        return this.service.getAll();
+        return this.userService.getAll();
     }
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") Integer id) {
-        return service.getById(id);
+        return userService.getById(id);
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getFriends(@PathVariable("id") Integer id) {
-        return service.getFriends(id);
+        return userService.getFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> getMutualFriends(@PathVariable("id") Integer id, @PathVariable("otherId") Integer otherId) {
-        return service.getMutualFriends(id, otherId);
+        return userService.getMutualFriends(id, otherId);
     }
 
     @PostMapping
@@ -45,7 +45,7 @@ public class UserController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        this.service.create(user);
+        this.userService.create(user);
         return user;
     }
 
@@ -54,7 +54,7 @@ public class UserController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        this.service.update(user);
+        this.userService.update(user);
         return user;
     }
 
@@ -63,7 +63,7 @@ public class UserController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        this.service.addFriend(id, friendId);
+        this.userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
@@ -71,6 +71,6 @@ public class UserController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        this.service.deleteFriend(id, friendId);
+        this.userService.deleteFriend(id, friendId);
     }
 }

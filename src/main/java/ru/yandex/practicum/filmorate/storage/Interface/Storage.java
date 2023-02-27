@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public abstract class Storage<T> {
 
-    private HashSet<T> storage;
+    private final HashSet<T> storage;
 
     public Storage() {
         this.storage = new HashSet<>();
