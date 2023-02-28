@@ -1,11 +1,10 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.*;
-import ru.yandex.practicum.filmorate.validation.FilmValidator;
-import ru.yandex.practicum.filmorate.validation.ValidationResult;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -14,13 +13,21 @@ import java.util.*;
 @RequestMapping("/films")
 @Slf4j
 public class FilmController {
+    private final FilmService filmService;
 
-    private final List<Film> films = new ArrayList<>();
-    private int id = 1;
+    @Autowired
+    public FilmController(FilmService service) {
+        this.filmService = service;
+    }
 
     @GetMapping
     public List<Film> getAll() {
-        return this.films;
+        return this.filmService.getAll();
+    }
+
+    @GetMapping("/{filmId}")
+    public Film getFilm(@PathVariable("filmId") Integer filmId) {
+        return filmService.getById(filmId);
     }
 
     @PostMapping
@@ -28,10 +35,7 @@ public class FilmController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        validate(film);
-        film.setId(this.id);
-        this.id++;
-        this.films.add(film);
+        this.filmService.create(film);
         return film;
     }
 
@@ -40,23 +44,33 @@ public class FilmController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        validate(film);
+        filmService.update(film);
 
-        if (!films.contains(film)) {
-            log.error("Фильм не найден в базе данных: " + film);
-            throw new ValidationException("Фильм не найден в базе");
-        }
-
-        this.films.remove(film);
-        this.films.add(film);
         return film;
     }
 
-    private void validate(Film film) {
-        ValidationResult validationResult = FilmValidator.validate(film);
-        if (!validationResult.isValid()) {
-            log.error("Передан невалидный объект фильма: " + film);
-            throw new ValidationException(validationResult.getMessage());
-        }
+    @PutMapping("/{id}/like/{userId}")
+    public void like(HttpServletRequest request, @PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
+
+        filmService.like(id, userId);
+    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void deleteLike(HttpServletRequest request, @PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
+
+        filmService.deleteLike(id, userId);
+    }
+
+    //GET /films/popular?count={count}
+    @GetMapping("/popular")
+    public List<Film> getTopRated(HttpServletRequest request, @RequestParam(value = "count", defaultValue = "10", required = false) Integer count) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
+
+        return filmService.getTopRated(count);
     }
 }
