@@ -1,8 +1,8 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.Interface.Storage;
 import ru.yandex.practicum.filmorate.storage.Interface.UserStorage;
 
 import java.util.List;
@@ -15,48 +15,60 @@ import java.util.stream.Collectors;
 @Component
 public class InMemoryUserStorage extends UserStorage {
 
-    private final HashMap<User, HashSet<User>> friendship;
+    private final HashMap<User, List<Friendship>> friends;
 
     public InMemoryUserStorage() {
-        this.friendship = new HashMap<>();
+        this.friends = new HashMap<>();
     }
 
     @Override
     public void beFriends(User u1, User u2) {
-        if (!friendship.containsKey(u1)) {
-            friendship.put(u1, new HashSet<>(Arrays.asList(u2)));
+        var friendship = new Friendship(u1, u2);
+        if (!friends.containsKey(u1)) {
+            var list = new ArrayList<>(List.of(friendship));
+            friends.put(u1, list);
         } else {
-            friendship.get(u1).add(u2);
+            friends.get(u1).add(friendship);
         }
 
-        if (!friendship.containsKey(u2)) {
-            friendship.put(u2, new HashSet<>(Arrays.asList(u1)));
+        if (!friends.containsKey(u2)) {
+            var list = new ArrayList<>(List.of(friendship));
+            friends.put(u2, list);
         } else {
-            friendship.get(u2).add(u1);
+            friends.get(u2).add(friendship);
         }
     }
 
     @Override
     public void breakFriendship(User u1, User u2) {
-        friendship.get(u1).remove(u2);
-        friendship.get(u2).remove(u1);
+        var friendship = new Friendship(u1, u2);
+        friends.get(u1).remove(friendship);
+        friends.get(u2).remove(friendship);
     }
 
     @Override
     public List<User> getFriends(User u) {
-        return friendship.get(u).stream().collect(Collectors.toList());
+        return friends.get(u).stream()
+                .map(x -> {
+                    if (x.getRecipient() == u) {
+                        return x.getRequester();
+                    } else {
+                        return x.getRecipient();
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public ArrayList<User> getMutualFriends(User u1, User u2) {
-        var list1 = friendship.get(u1);
-        var list2 = friendship.get(u2);
+        var list1 = new ArrayList<>(this.getFriends(u1));
+        var list2 = new ArrayList<>(this.getFriends(u2));
 
         if (list1 == null || list2 == null) {
             return new ArrayList<>();
         }
 
-        var mutual = (HashSet) list1.clone();
+        var mutual = (HashSet) (list1.clone());
         mutual.retainAll(list2);
 
         return new ArrayList<>(mutual);

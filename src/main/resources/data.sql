@@ -1,0 +1,6 @@
+    --INSERT INTO GENRE(ID, NAME) VALUES (1, 'Комедия');
+    --INSERT INTO GENRE(ID, NAME) VALUES (2, 'Драма');
+    --INSERT INTO GENRE(ID, NAME) VALUES (3, 'Мультфильм');
+    --INSERT INTO GENRE(ID, NAME) VALUES (4, 'Триллер');
+    --INSERT INTO GENRE(ID, NAME) VALUES (5, 'Документальный');
+    --INSERT INTO GENRE(ID, NAME) VALUES (6, 'Боевик');

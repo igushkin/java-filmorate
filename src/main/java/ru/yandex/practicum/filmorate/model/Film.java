@@ -14,6 +14,9 @@ public class Film {
     private int id;
     @NotBlank
     private String name;
+    private List<Integer> genreIds;
+    @NotBlank
+    private Rating rating;
     @Max(200)
     private String description;
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -21,3 +24,4 @@ public class Film {
     @Min(1)
     private Integer duration;
 }
+
