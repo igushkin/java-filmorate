@@ -69,7 +69,7 @@ class FilmControllerTest {
 
     @Test
     void createFailDescription() throws Exception {
-        String content = "{ \"name\": \"name\", \"description\": \"asdasASddescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiona13Asd19823asdasi.hADSa\", \"releaseDate\": \"1967-03-25\", \"duration\": 100 }";
+        String content = "{ \"name\": \"name\", \"description\": \"asdasASddescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiona13Asd19823asdasi.hADSa\", \"releaseDate\": \"1967-03-25\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ class FilmControllerTest {
 
     @Test
     void createFailReleaseDate() throws Exception {
-        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1895-12-27\", \"duration\": 100 }";
+        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1895-12-27\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -89,7 +89,7 @@ class FilmControllerTest {
 
     @Test
     void createFailDuration() throws Exception {
-        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": -1 }";
+        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": -1, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +99,7 @@ class FilmControllerTest {
 
     @Test
     void updateFailId() throws Exception {
-        String content = "{ \"id\": 100, \"name\": \"Film Updated\", \"releaseDate\": \"1989-04-17\", \"description\": \"New film update decription\", \"duration\": 190}";
+        String content = "{ \"id\": 100, \"name\": \"Film Updated\", \"releaseDate\": \"1989-04-17\", \"description\": \"New film update decription\", \"duration\": 190, \"mpa\": { \"id\": 1}}";
 
         mvc.perform(put("/films")
                 .contentType(MediaType.APPLICATION_JSON)
