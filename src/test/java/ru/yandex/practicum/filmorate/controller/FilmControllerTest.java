@@ -28,7 +28,7 @@ class FilmControllerTest {
 
     @Test
     void create() throws Exception {
-        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100 }";
+        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -42,8 +42,8 @@ class FilmControllerTest {
 
     @Test
     void update() throws Exception {
-        String content1 = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100 }";
-        String content2 = "{ \"id\": 1, \"name\": \"Film Updated\", \"releaseDate\": \"1989-04-17\", \"description\": \"New film update decription\", \"duration\": 190}";
+        String content1 = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
+        String content2 = "{ \"id\": 1, \"name\": \"Film Updated\", \"releaseDate\": \"1989-04-17\", \"description\": \"New film update decription\", \"duration\": 190, \"mpa\": { \"id\": 1}}";
 
         mvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON).content(content1));
 
@@ -59,7 +59,7 @@ class FilmControllerTest {
 
     @Test
     void createFailName() throws Exception {
-        String content = "{ \"name\": \"\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100 }";
+        String content = "{ \"name\": \"\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
