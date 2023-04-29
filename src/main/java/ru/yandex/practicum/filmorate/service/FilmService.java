@@ -49,8 +49,8 @@ public class FilmService {
         validate(film);
 
         film.setId(this.id);
-        this.id++;
         storage.create(film);
+        this.id++;
         return film;
     }
 
@@ -69,7 +69,7 @@ public class FilmService {
     public void deleteLike(int filmId, int userId) {
         var film = this.getById(filmId);
         var user = this.userService.getById(userId);
-        this.storage.like(film, user);
+        this.storage.deleteLike(film, user);
     }
 
     public List<Film> getTopRated(int count) {

@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.storage.Interface.UserStorage;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -22,20 +21,20 @@ public class InMemoryUserStorage extends UserStorage {
     }
 
     @Override
-    public void beFriends(User u1, User u2) {
-        var friendship = new Friendship(u1, u2);
-        if (!friends.containsKey(u1)) {
+    public void addFriend(User requester, User user) {
+        var friendship = new Friendship(requester, user);
+        if (!friends.containsKey(requester)) {
             var list = new ArrayList<>(List.of(friendship));
-            friends.put(u1, list);
+            friends.put(requester, list);
         } else {
-            friends.get(u1).add(friendship);
+            friends.get(requester).add(friendship);
         }
 
-        if (!friends.containsKey(u2)) {
+        if (!friends.containsKey(user)) {
             var list = new ArrayList<>(List.of(friendship));
-            friends.put(u2, list);
+            friends.put(user, list);
         } else {
-            friends.get(u2).add(friendship);
+            friends.get(user).add(friendship);
         }
     }
 

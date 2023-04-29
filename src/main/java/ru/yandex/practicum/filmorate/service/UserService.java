@@ -1,13 +1,12 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.Interface.UserStorage;
-import ru.yandex.practicum.filmorate.validation.FilmValidator;
 import ru.yandex.practicum.filmorate.validation.UserValidator;
 
 import java.util.*;
@@ -22,7 +21,7 @@ public class UserService {
     }
 
     @Autowired
-    public UserService(UserStorage storage) {
+    public UserService(@Qualifier("userDbStorage") UserStorage storage) {
         this.storage = storage;
     }
 
@@ -47,8 +46,8 @@ public class UserService {
         validate(user);
 
         user.setId(this.id);
-        this.id++;
         storage.create(user);
+        this.id++;
         return user;
     }
 
@@ -56,7 +55,7 @@ public class UserService {
         User user1 = this.getById(u1);
         User user2 = this.getById(u2);
 
-        this.storage.beFriends(user1, user2);
+        this.storage.addFriend(user1, user2);
     }
 
     public User update(User user) {
