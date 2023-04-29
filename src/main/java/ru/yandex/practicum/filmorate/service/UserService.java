@@ -9,7 +9,8 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.Interface.UserStorage;
 import ru.yandex.practicum.filmorate.validation.UserValidator;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {

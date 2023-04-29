@@ -3,10 +3,6 @@ package ru.yandex.practicum.filmorate.validation;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class FilmValidator {
 

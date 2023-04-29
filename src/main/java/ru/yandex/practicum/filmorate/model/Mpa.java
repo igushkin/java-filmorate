@@ -1,7 +1,5 @@
 package ru.yandex.practicum.filmorate.model;
 
-import com.google.gson.annotations.SerializedName;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
