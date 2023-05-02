@@ -56,7 +56,7 @@ class FilmoRateApplicationTests {
     }
 
     @Test
-    public void testGetAllMpa() {
+    public void getAllMpaSuccess() {
         List<Mpa> mpaList = mpaStorage.getAll();
         List<Mpa> expected = List.of(
                 new Mpa(1),
@@ -69,7 +69,7 @@ class FilmoRateApplicationTests {
     }
 
     @Test
-    public void testGetMpaById() {
+    public void getMpaByIdSuccess() {
         assertThat(mpaStorage.getById(1)).isEqualTo(new Mpa(1));
         assertThat(mpaStorage.getById(2)).isEqualTo(new Mpa(2));
         assertThat(mpaStorage.getById(3)).isEqualTo(new Mpa(3));
@@ -78,7 +78,7 @@ class FilmoRateApplicationTests {
     }
 
     @Test
-    public void testGetAllGenres() {
+    public void getAllGenresSuccess() {
         List<Genre> genreList = genreStorage.getAll();
         List<Genre> expected = List.of(
                 new Genre(1),
@@ -92,7 +92,7 @@ class FilmoRateApplicationTests {
     }
 
     @Test
-    public void testGetGenreById() {
+    public void getGenreByIdSuccess() {
         assertThat(genreStorage.getById(1)).isEqualTo(new Genre(1));
         assertThat(genreStorage.getById(2)).isEqualTo(new Genre(2));
         assertThat(genreStorage.getById(3)).isEqualTo(new Genre(3));
@@ -103,7 +103,7 @@ class FilmoRateApplicationTests {
 
     // --- User tests ---
     @Test
-    public void testFindAllUsers() {
+    public void getAllUsersSuccess() {
 
         List<User> users = userStorage.getAll();
 
@@ -111,7 +111,7 @@ class FilmoRateApplicationTests {
     }
 
     @Test
-    public void testGetFriends() {
+    public void getFriendsSuccess() {
         var user = users.get(0);
         // Get friends
         assertThat(userStorage.getFriends(user)).isEqualTo(List.of());
@@ -125,10 +125,11 @@ class FilmoRateApplicationTests {
         assertThat(userStorage.getFriends(user)).isEqualTo(List.of());
     }
 
-    public void testMutualFriends() {
+    public void getMutualFriendsSuccess() {
         var u1 = users.get(0);
         var u2 = users.get(1);
         var mutualFriends = userStorage.getMutualFriends(u1, u2);
+        // Empty result
         assertThat(mutualFriends).isEqualTo(List.of());
         // Add mutual friend
         userStorage.addFriend(u1, users.get(2));
@@ -140,13 +141,13 @@ class FilmoRateApplicationTests {
 
     // --- Film tests
     // Get All
-    public void testGetAll() {
+    public void getAllFilmsSuccess() {
         var films = filmStorage.getAll();
         assertThat(films).isEqualTo(this.films);
     }
 
     // Get top-rated
-    public void testGetTopRated() {
+    public void getTopRatedSuccess() {
         var u1 = users.get(0);
         var u2 = users.get(1);
         var u3 = users.get(2);

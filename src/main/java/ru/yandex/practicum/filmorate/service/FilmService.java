@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,10 @@ import ru.yandex.practicum.filmorate.validation.FilmValidator;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class FilmService {
-    private final FilmStorage storage;
+    private final FilmStorage filmStorage;
     private final UserService userService;
     private static int id;
 
@@ -22,17 +24,19 @@ public class FilmService {
     }
 
     @Autowired
-    public FilmService(@Qualifier("filmDbStorage") FilmStorage storage, UserService userService) {
-        this.storage = storage;
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage, UserService userService) {
+        this.filmStorage = filmStorage;
         this.userService = userService;
     }
 
     public List<Film> getAll() {
-        return this.storage.getAll();
+        log.info("Получен запрос к методу getAll() класса FilmService");
+        return filmStorage.getAll();
     }
 
     public Film getById(int id) {
-        var value = this.storage.getAll()
+        log.info("Получен запрос к методу getById() класса FilmService, id: {}", id);
+        var value = filmStorage.getAll()
                 .stream()
                 .filter(x -> x.getId() == id)
                 .findFirst();
@@ -45,34 +49,39 @@ public class FilmService {
     }
 
     public Film create(Film film) {
+        log.info("Получен запрос к методу create() класса FilmService, film: {}", film);
         validate(film);
 
         film.setId(this.id);
-        storage.create(film);
+        filmStorage.create(film);
         this.id++;
         return film;
     }
 
     public Film update(Film film) {
+        log.info("Получен запрос к методу update() класса FilmService, film: {}", film);
         validate(film);
-        storage.update(film);
+        filmStorage.update(film);
         return film;
     }
 
     public void like(int filmId, int userId) {
-        var film = this.getById(filmId);
-        var user = this.userService.getById(userId);
-        this.storage.like(film, user);
+        log.info("Получен запрос к методу like() класса FilmService, filmId: {}, userId: {}", filmId, userId);
+        var film = getById(filmId);
+        var user = userService.getById(userId);
+        filmStorage.like(film, user);
     }
 
     public void deleteLike(int filmId, int userId) {
-        var film = this.getById(filmId);
-        var user = this.userService.getById(userId);
-        this.storage.deleteLike(film, user);
+        log.info("Получен запрос к методу deleteLike() класса FilmService, filmId: {}, userId: {}", filmId, userId);
+        var film = getById(filmId);
+        var user = userService.getById(userId);
+        filmStorage.deleteLike(film, user);
     }
 
     public List<Film> getTopRated(int count) {
-        return this.storage.getTopRated(count);
+        log.info("Получен запрос к методу getTopRated() класса FilmService, count: {}", count);
+        return filmStorage.getTopRated(count);
     }
 
     private void validate(Film film) {

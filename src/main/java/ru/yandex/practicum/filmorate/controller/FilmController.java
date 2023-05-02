@@ -21,12 +21,16 @@ public class FilmController {
     }
 
     @GetMapping
-    public List<Film> getAll() {
-        return this.filmService.getAll();
+    public List<Film> getAll(HttpServletRequest request) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
+        return filmService.getAll();
     }
 
     @GetMapping("/{filmId}")
-    public Film getFilm(@PathVariable("filmId") Integer filmId) {
+    public Film getFilm(HttpServletRequest request, @PathVariable("filmId") Integer filmId) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
         return filmService.getById(filmId);
     }
 
@@ -35,7 +39,7 @@ public class FilmController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        this.filmService.create(film);
+        filmService.create(film);
         return film;
     }
 

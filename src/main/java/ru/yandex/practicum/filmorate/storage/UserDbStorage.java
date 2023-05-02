@@ -73,18 +73,6 @@ public class UserDbStorage extends UserStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
-    /*@EqualsAndHashCode.Include
-    private int id;
-    @NotBlank
-    @Pattern(regexp = ".*@.*")
-    private String email;
-    @Pattern(regexp = "^[^ ]+$")
-    private String login;
-    private String name;
-    @Past
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date birthday;*/
-
     @Override
     public void create(User obj) {
         String sqlQuery = "insert into MY_USER " +

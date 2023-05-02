@@ -9,7 +9,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -19,7 +19,7 @@ public class Film {
     private int id;
     @NotBlank
     private String name;
-    private HashSet<Genre> genres;
+    private Set<Genre> genres;
     private int likes;
     @NotBlank
     private Mpa mpa;

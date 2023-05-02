@@ -1,23 +1,33 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Genre {
 
-    private static final String Comedy = "Комедия";
-    private static final String Drama = "Драма";
-    private static final String Cartoon = "Мультфильм";
-    private static final String Thriller = "Триллер";
-    private static final String Documentary = "Документальный";
-    private static final String Action = "Боевик";
+    enum GenreName {
+        Comedy("Комедия"),
+        Drama("Драма"),
+        Cartoon("Мультфильм"),
+        Thriller("Триллер"),
+        Documentary("Документальный"),
+        Action("Боевик");
+
+        private final String value;
+
+        GenreName(String genreName) {
+            this.value = genreName;
+        }
+
+        String getValue() {
+            return this.value;
+        }
+    }
 
     private int id;
-    private String name;
-
-    public Genre() {
-
-    }
+    private GenreName genreName;
 
     public Genre(Integer id) {
         setId(id);
@@ -28,22 +38,22 @@ public class Genre {
 
         switch (id) {
             case 1:
-                this.name = Comedy;
+                this.genreName = GenreName.Comedy;
                 break;
             case 2:
-                this.name = Drama;
+                this.genreName = GenreName.Drama;
                 break;
             case 3:
-                this.name = Cartoon;
+                this.genreName = GenreName.Cartoon;
                 break;
             case 4:
-                this.name = Thriller;
+                this.genreName = GenreName.Thriller;
                 break;
             case 5:
-                this.name = Documentary;
+                this.genreName = GenreName.Documentary;
                 break;
             case 6:
-                this.name = Action;
+                this.genreName = GenreName.Action;
                 break;
             default:
                 throw new IllegalArgumentException("Передано неверное сообщение для поля MPA");

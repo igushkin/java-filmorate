@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.service.MpaService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -16,20 +17,24 @@ import java.util.List;
 @Slf4j
 public class MpaController {
 
-    private final MpaService service;
+    private final MpaService mpaService;
 
     @Autowired
     public MpaController(MpaService service) {
-        this.service = service;
+        this.mpaService = service;
     }
 
     @GetMapping
-    public List<Mpa> getAll() {
-        return this.service.getAll();
+    public List<Mpa> getAll(HttpServletRequest request) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
+        return mpaService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Mpa getById(@PathVariable("id") Integer id) {
-        return service.getById(id);
+    public Mpa getById(HttpServletRequest request, @PathVariable("id") Integer id) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
+        return mpaService.getById(id);
     }
 }

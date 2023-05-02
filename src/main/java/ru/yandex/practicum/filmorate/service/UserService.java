@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserService {
-    private final UserStorage storage;
+    private final UserStorage userStorage;
     private static int id;
 
     static {
@@ -22,16 +24,18 @@ public class UserService {
     }
 
     @Autowired
-    public UserService(@Qualifier("userDbStorage") UserStorage storage) {
-        this.storage = storage;
+    public UserService(@Qualifier("userDbStorage") UserStorage userStorage) {
+        this.userStorage = userStorage;
     }
 
     public List<User> getAll() {
-        return this.storage.getAll();
+        log.info("Получен запрос к методу getAll() класса UserService");
+        return userStorage.getAll();
     }
 
     public User getById(int id) {
-        Optional<User> value = this.storage.getAll()
+        log.info("Получен запрос к методу getById() класса UserService, id: {}", id);
+        Optional<User> value = userStorage.getAll()
                 .stream()
                 .filter(x -> x.getId() == id)
                 .findFirst();
@@ -44,44 +48,50 @@ public class UserService {
     }
 
     public User create(User user) {
+        log.info("Получен запрос к методу create() класса UserService, user: {}", user);
         validate(user);
 
         user.setId(this.id);
-        storage.create(user);
+        userStorage.create(user);
         this.id++;
         return user;
     }
 
     public void addFriend(int u1, int u2) {
+        log.info("Получен запрос к методу addFriend() класса UserService, 1userID: {}, 2userID: {}", u1, u2);
         User user1 = this.getById(u1);
         User user2 = this.getById(u2);
 
-        this.storage.addFriend(user1, user2);
+        userStorage.addFriend(user1, user2);
     }
 
     public User update(User user) {
+        log.info("Получен запрос к методу update() класса UserService, user: {}", user);
         validate(user);
-        storage.update(user);
+        userStorage.update(user);
         return user;
     }
 
     public void deleteFriend(int u1, int u2) {
+        log.info("Получен запрос к методу deleteFriend() класса UserService, 1userID: {}, 2userID: {}", u1, u2);
         User user1 = this.getById(u1);
         User user2 = this.getById(u2);
 
-        this.storage.breakFriendship(user1, user2);
+        userStorage.breakFriendship(user1, user2);
     }
 
-    public List<User> getFriends(int u) {
-        User user = this.getById(u);
-        return this.storage.getFriends(user);
+    public List<User> getFriends(int userId) {
+        log.info("Получен запрос к методу getFriends() класса UserService, userID: {}", userId);
+        User user = this.getById(userId);
+        return userStorage.getFriends(user);
     }
 
     public List<User> getMutualFriends(int u1, int u2) {
+        log.info("Получен запрос к методу getMutualFriends() класса UserService, 1userID: {}, 2userID: {}", u1, u2);
         User user1 = this.getById(u1);
         User user2 = this.getById(u2);
 
-        return this.storage.getMutualFriends(user1, user2);
+        return userStorage.getMutualFriends(user1, user2);
     }
 
     private void validate(User user) {
