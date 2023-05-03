@@ -7,27 +7,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Genre {
 
-    enum GenreName {
-        Comedy("Комедия"),
-        Drama("Драма"),
-        Cartoon("Мультфильм"),
-        Thriller("Триллер"),
-        Documentary("Документальный"),
-        Action("Боевик");
-
-        private final String value;
-
-        GenreName(String genreName) {
-            this.value = genreName;
-        }
-
-        String getValue() {
-            return this.value;
-        }
-    }
+    private static final String COMEDY = "Комедия";
+    private static final String DRAMA = "Драма";
+    private static final String CARTOON = "Мультфильм";
+    private static final String THRILLER = "Триллер";
+    private static final String DOCUMENTARY = "Документальный";
+    private static final String ACTION = "Боевик";
 
     private int id;
-    private GenreName genreName;
+    private String name;
 
     public Genre(Integer id) {
         setId(id);
@@ -38,22 +26,22 @@ public class Genre {
 
         switch (id) {
             case 1:
-                this.genreName = GenreName.Comedy;
+                this.name = COMEDY;
                 break;
             case 2:
-                this.genreName = GenreName.Drama;
+                this.name = DRAMA;
                 break;
             case 3:
-                this.genreName = GenreName.Cartoon;
+                this.name = CARTOON;
                 break;
             case 4:
-                this.genreName = GenreName.Thriller;
+                this.name = THRILLER;
                 break;
             case 5:
-                this.genreName = GenreName.Documentary;
+                this.name = DOCUMENTARY;
                 break;
             case 6:
-                this.genreName = GenreName.Action;
+                this.name = ACTION;
                 break;
             default:
                 throw new IllegalArgumentException("Передано неверное сообщение для поля MPA");
