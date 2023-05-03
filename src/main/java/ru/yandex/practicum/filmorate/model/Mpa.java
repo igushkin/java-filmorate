@@ -14,7 +14,7 @@ public class Mpa {
     private static final String NC_17 = "NC-17";
     private String name;
     private Integer id;
-    
+
     public Mpa(Integer id) {
         this.setId(id);
     }
