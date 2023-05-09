@@ -27,7 +27,7 @@ public class UserDbStorage extends UserStorage {
         var queryResult = jdbcTemplate.query(sqlQuery, (x, y) -> mapRowToUser(x, y))
                 .stream()
                 .collect(Collectors.toList());
-
+        
         if (queryResult.size() == 0) {
             throw new NotFoundException("Такой пользователь не найден");
         } else {
