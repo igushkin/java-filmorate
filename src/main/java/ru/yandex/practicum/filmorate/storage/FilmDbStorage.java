@@ -162,6 +162,29 @@ public class FilmDbStorage extends FilmStorage {
                 .stream().collect(Collectors.toList());
     }
 
+    @Override
+    public Film getById(Integer id) {
+        String sqlQuery = "select * from film " +
+                "LEFT join film_to_genre as ftg on ftg.film_id = film.film_id " +
+                "LEFT JOIN RATING ON film.RATING_ID = rating.ID " +
+                "LEFT JOIN (" +
+                "SELECT LIKES.FILM_ID, count(*) AS likes " +
+                "FROM LIKES " +
+                "GROUP BY LIKES.FILM_ID) AS tb ON TB.FILM_ID = film.FILM_ID " +
+                "WHERE FILM.FILM_ID = " + id;
+
+        var queryResult = jdbcTemplate
+                .query(sqlQuery, (x, y) -> mapRowToFilm(x, y, getGenres()))
+                .stream()
+                .collect(Collectors.toList());
+
+        if (queryResult.size() == 0) {
+            throw new NotFoundException("Такой фильм не найден");
+        } else {
+            return queryResult.get(0);
+        }
+    }
+
     private Film mapRowToFilm(ResultSet rs, int rowNum, Map<Integer, HashSet<Genre>> genres) throws SQLException {
         int id = rs.getInt("FILM.FILM_ID");
         String name = rs.getString("NAME");

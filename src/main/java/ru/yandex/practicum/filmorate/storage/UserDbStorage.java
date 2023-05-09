@@ -18,6 +18,23 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class UserDbStorage extends UserStorage {
+
+    @Override
+    public User getById(Integer id) {
+        String sqlQuery = "select * from my_user " +
+                "WHERE MY_USER.USER_ID = " + id;
+
+        var queryResult = jdbcTemplate.query(sqlQuery, (x, y) -> mapRowToUser(x, y))
+                .stream()
+                .collect(Collectors.toList());
+
+        if (queryResult.size() == 0) {
+            throw new NotFoundException("Такой пользователь не найден");
+        } else {
+            return queryResult.get(0);
+        }
+    }
+
     @Override
     public void addFriend(User requester, User recipient) {
         String sqlQuery = "insert into FRIENDSHIP " +

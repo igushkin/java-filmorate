@@ -35,16 +35,7 @@ public class UserService {
 
     public User getById(int id) {
         log.info("Получен запрос к методу getById() класса UserService, id: {}", id);
-        Optional<User> value = userStorage.getAll()
-                .stream()
-                .filter(x -> x.getId() == id)
-                .findFirst();
-
-        if (value.isEmpty()) {
-            throw new NotFoundException("Пользователь с id " + id + " не найден");
-        }
-
-        return value.get();
+        return userStorage.getById(id);
     }
 
     public User create(User user) {

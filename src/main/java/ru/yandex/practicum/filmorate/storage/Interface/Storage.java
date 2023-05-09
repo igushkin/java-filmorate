@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public abstract class Storage<T> {
 
-    private final HashSet<T> storage;
+    protected final HashSet<T> storage;
 
     public Storage() {
         this.storage = new HashSet<>();
@@ -41,4 +41,6 @@ public abstract class Storage<T> {
     public List<T> getAll() {
         return storage.stream().collect(Collectors.toList());
     }
+
+    public abstract T getById(Integer id);
 }

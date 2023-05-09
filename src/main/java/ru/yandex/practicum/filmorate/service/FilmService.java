@@ -36,16 +36,7 @@ public class FilmService {
 
     public Film getById(int id) {
         log.info("Получен запрос к методу getById() класса FilmService, id: {}", id);
-        var value = filmStorage.getAll()
-                .stream()
-                .filter(x -> x.getId() == id)
-                .findFirst();
-
-        if (value.isEmpty()) {
-            throw new NotFoundException("Такой фильм не найден");
-        }
-
-        return value.get();
+        return filmStorage.getById(id);
     }
 
     public Film create(Film film) {

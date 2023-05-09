@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.Interface.FilmStorage;
@@ -62,5 +63,19 @@ public class InMemoryFilmStorage extends FilmStorage {
         });
 
         return rating.stream().limit(count).map(x -> x.getKey()).collect(Collectors.toList());
+    }
+
+    @Override
+    public Film getById(Integer id) {
+        var value = storage
+                .stream()
+                .filter(x -> x.getId() == id)
+                .findFirst();
+
+        if (value.isEmpty()) {
+            throw new NotFoundException("Такой фильм не найден");
+        }
+
+        return value.get();
     }
 }
