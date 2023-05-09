@@ -36,6 +36,7 @@ public class FilmService {
 
     public Film getById(int id) {
         log.info("Получен запрос к методу getById() класса FilmService, id: {}", id);
+        
         return filmStorage.getById(id);
     }
 
