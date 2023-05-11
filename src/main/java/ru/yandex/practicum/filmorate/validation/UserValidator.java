@@ -1,12 +1,8 @@
 package ru.yandex.practicum.filmorate.validation;
 
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
 
 public class UserValidator {
 
@@ -17,7 +13,7 @@ public class UserValidator {
         if (user.getLogin() == null || user.getLogin().contains(" ")) {
             return new ValidationResult(false, "логин не может быть пустым и содержать пробелы");
         }
-        if (user.getBirthday() != null && user.getBirthday().after(new Date())) {
+        if (user.getBirthday() != null && user.getBirthday().isAfter(LocalDate.now())) {
             return new ValidationResult(false, "дата рождения не может быть в будущем");
         }
 

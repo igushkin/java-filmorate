@@ -1,12 +1,14 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -22,5 +24,5 @@ public class User {
     private String name;
     @Past
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date birthday;
+    private LocalDate birthday;
 }

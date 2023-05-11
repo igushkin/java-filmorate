@@ -2,10 +2,7 @@ package ru.yandex.practicum.filmorate.validation;
 
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
 
 public class FilmValidator {
 
@@ -16,10 +13,10 @@ public class FilmValidator {
         if (film.getDescription() != null && film.getDescription().length() > 200) {
             return new ValidationResult(false, "максимальная длина описания 200 символов");
         }
-        Calendar cal = Calendar.getInstance();
-        cal.set(1895, Calendar.DECEMBER, 28); //Year, month and day of month
-        Date date = cal.getTime();
-        if (film.getReleaseDate() != null && film.getReleaseDate().before(date)) {
+
+        var date = LocalDate.of(1895, 12, 28);
+
+        if (film.getReleaseDate() != null && film.getReleaseDate().isBefore(date)) {
             return new ValidationResult(false, "Дата релиза не может быть раньше 28 декабря 1895 г.");
         }
         if (film.getDuration() != null && film.getDuration() < 1) {

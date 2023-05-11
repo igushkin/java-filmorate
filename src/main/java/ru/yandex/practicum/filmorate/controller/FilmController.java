@@ -3,11 +3,11 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.model.*;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/films")
@@ -21,12 +21,16 @@ public class FilmController {
     }
 
     @GetMapping
-    public List<Film> getAll() {
-        return this.filmService.getAll();
+    public List<Film> getAll(HttpServletRequest request) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
+        return filmService.getAll();
     }
 
     @GetMapping("/{filmId}")
-    public Film getFilm(@PathVariable("filmId") Integer filmId) {
+    public Film getFilm(HttpServletRequest request, @PathVariable("filmId") Integer filmId) {
+        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
+                request.getMethod(), request.getRequestURI(), request.getQueryString());
         return filmService.getById(filmId);
     }
 
@@ -35,7 +39,7 @@ public class FilmController {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
 
-        this.filmService.create(film);
+        filmService.create(film);
         return film;
     }
 

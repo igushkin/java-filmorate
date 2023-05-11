@@ -5,13 +5,13 @@ import ru.yandex.practicum.filmorate.exception.BadRequestException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 
 import java.util.HashSet;
-import java.util.stream.Collectors;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public abstract class Storage<T> {
 
-    private final HashSet<T> storage;
+    protected final HashSet<T> storage;
 
     public Storage() {
         this.storage = new HashSet<>();
@@ -41,4 +41,6 @@ public abstract class Storage<T> {
     public List<T> getAll() {
         return storage.stream().collect(Collectors.toList());
     }
+
+    public abstract T getById(Integer id);
 }

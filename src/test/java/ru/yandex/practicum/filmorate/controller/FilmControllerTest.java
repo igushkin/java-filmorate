@@ -1,30 +1,22 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@AutoConfigureTestDatabase
 class FilmControllerTest {
 
     @Autowired
@@ -38,7 +30,7 @@ class FilmControllerTest {
 
     @Test
     void create() throws Exception {
-        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100 }";
+        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -52,8 +44,8 @@ class FilmControllerTest {
 
     @Test
     void update() throws Exception {
-        String content1 = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100 }";
-        String content2 = "{ \"id\": 1, \"name\": \"Film Updated\", \"releaseDate\": \"1989-04-17\", \"description\": \"New film update decription\", \"duration\": 190}";
+        String content1 = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
+        String content2 = "{ \"id\": 1, \"name\": \"Film Updated\", \"releaseDate\": \"1989-04-17\", \"description\": \"New film update decription\", \"duration\": 190, \"mpa\": { \"id\": 1}}";
 
         mvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON).content(content1));
 
@@ -69,7 +61,7 @@ class FilmControllerTest {
 
     @Test
     void createFailName() throws Exception {
-        String content = "{ \"name\": \"\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100 }";
+        String content = "{ \"name\": \"\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +71,7 @@ class FilmControllerTest {
 
     @Test
     void createFailDescription() throws Exception {
-        String content = "{ \"name\": \"name\", \"description\": \"asdasASddescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiona13Asd19823asdasi.hADSa\", \"releaseDate\": \"1967-03-25\", \"duration\": 100 }";
+        String content = "{ \"name\": \"name\", \"description\": \"asdasASddescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiona13Asd19823asdasi.hADSa\", \"releaseDate\": \"1967-03-25\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -89,7 +81,7 @@ class FilmControllerTest {
 
     @Test
     void createFailReleaseDate() throws Exception {
-        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1895-12-27\", \"duration\": 100 }";
+        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1895-12-27\", \"duration\": 100, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +91,7 @@ class FilmControllerTest {
 
     @Test
     void createFailDuration() throws Exception {
-        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": -1 }";
+        String content = "{ \"name\": \"name\", \"description\": \"description\", \"releaseDate\": \"1967-03-25\", \"duration\": -1, \"mpa\": { \"id\": 1} }";
 
         mvc.perform(post("/films")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -109,7 +101,7 @@ class FilmControllerTest {
 
     @Test
     void updateFailId() throws Exception {
-        String content = "{ \"id\": 100, \"name\": \"Film Updated\", \"releaseDate\": \"1989-04-17\", \"description\": \"New film update decription\", \"duration\": 190}";
+        String content = "{ \"id\": 100, \"name\": \"Film Updated\", \"releaseDate\": \"1989-04-17\", \"description\": \"New film update decription\", \"duration\": 190, \"mpa\": { \"id\": 1}}";
 
         mvc.perform(put("/films")
                 .contentType(MediaType.APPLICATION_JSON)

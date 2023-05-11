@@ -7,7 +7,7 @@ import java.util.List;
 
 @Component
 public abstract class UserStorage extends Storage<User> {
-    public abstract void beFriends(User u1, User u2);
+    public abstract void addFriend(User u1, User u2);
 
     public abstract void breakFriendship(User u1, User u2);
 
